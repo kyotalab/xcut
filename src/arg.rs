@@ -1,7 +1,7 @@
 use clap::Parser;
 use std::path::PathBuf;
 
-#[derive(Debug, Parser)]
+#[derive(Debug, Clone, Parser)]
 pub struct Args {
     #[arg(short = 'i', long = "input")]
     pub input: Option<PathBuf>,
