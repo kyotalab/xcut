@@ -1,0 +1,17 @@
+# ======================
+# Rust build artifacts
+/target/
+**/*.rs.bk
+
+# Cargo lock (libraryクレートなら通常無視)
+Cargo.lock
+
+# ======================
+# IDE/editor settings
+.vscode/
+.idea/
+
+# ======================
+# OS generated files
+.DS_Store
+Thumbs.db
