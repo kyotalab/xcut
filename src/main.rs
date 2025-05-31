@@ -23,11 +23,13 @@ fn main() -> Result<()> {
 
     for line in reader.lines() {
         let line = line?;
+        // ここは`--delim` オプションを追加した時に、実装方法を変更する予定
         let fields: Vec<&str> = line.split_whitespace().collect();
 
         if let Some(ref vec) = args.cols {
             let extracted_line = extract_columns(&fields, vec);
-            extracted_line.iter().for_each(|f| println!("{}", f));
+            // ここは、区切り文字でjoinできるようにする
+            println!("{}", extracted_line.join(" "));
         }
     }
     Ok(())
