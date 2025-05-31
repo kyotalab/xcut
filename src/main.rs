@@ -10,6 +10,7 @@ use xcut::Args;
 
 fn main() -> Result<()> {
     let args = Args::parse();
+
     if args.input.is_none() {
         eprintln!("Reading from stdin... (press Ctrl+D to end input)");
     }
@@ -23,9 +24,18 @@ fn main() -> Result<()> {
     for line in reader.lines() {
         let line = line?;
         let fields: Vec<&str> = line.split_whitespace().collect();
-        fields.iter().for_each(|&f| println!("{}", f));
-    }
 
-    // println!("{:?}", args.clone());
+        if let Some(ref vec) = args.cols {
+            let extracted_line = extract_columns(&fields, vec);
+            extracted_line.iter().for_each(|f| println!("{}", f));
+        }
+    }
     Ok(())
+}
+
+pub fn extract_columns<'a>(fields: &'a [&'a str], indices: &'a [usize]) -> Vec<&'a str> {
+    indices
+        .iter()
+        .filter_map(|&i| fields.get(i - 1).copied())
+        .collect()
 }
