@@ -2,6 +2,7 @@ use clap::Parser;
 use std::path::PathBuf;
 
 #[derive(Debug, Clone, Parser)]
+#[command(name = "xcut", version = "0.1", author = "kyotalab")]
 pub struct Args {
     #[arg(short = 'i', long = "input")]
     pub input: Option<PathBuf>,
@@ -17,6 +18,8 @@ pub struct Args {
     pub delim: Option<String>,
     #[arg(short = 'm', long = "max-split")]
     pub max_split: Option<usize>,
-    #[arg(short = 'o', long = "out-delim")]
+    #[arg(long = "out-delim")]
     pub out_delim: Option<String>,
+    #[arg(long = "output")]
+    pub output: Option<PathBuf>,
 }

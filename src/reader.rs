@@ -1,9 +1,9 @@
 use anyhow::Result;
 use regex::Regex;
-use std::io::BufRead;
+use std::io::{BufRead, Write};
 
 use crate::Args;
-use crate::{eval_regex_filter, evaluate_expression_with_fields, extract_columns};
+use crate::{eval_regex_filter, evaluate_expression_with_fields, extract_columns, get_writer};
 
 pub fn read_lines(args: Args, reader: Box<dyn BufRead>) -> Result<()> {
     let re_pos_regex = Regex::new(r#"col\((\d+)\)\s*=~\s*"(.+?)""#)?;
@@ -34,12 +34,16 @@ pub fn read_lines(args: Args, reader: Box<dyn BufRead>) -> Result<()> {
         }
 
         let out_delim = args.out_delim.as_deref().unwrap_or(" ");
-        if let Some(ref vec) = args.cols {
-            let extracted_line = extract_columns(&fields, vec);
-            println!("{}", extracted_line?.join(out_delim));
+        let mut writer = get_writer(&args.output)?;
+
+        let output_line = if let Some(ref vec) = args.cols {
+            let extracted_line = extract_columns(&fields, vec)?;
+            extracted_line.join(out_delim)
         } else {
-            println!("{}", fields.join(out_delim));
-        }
+            fields.join(out_delim)
+        };
+
+        writeln!(writer, "{}", output_line)?;
     }
     Ok(())
 }
