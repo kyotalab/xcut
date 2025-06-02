@@ -1,0 +1,11 @@
+2024-05-01 10:00:00 ERROR Failed to connect to 192.168.1.1
+2024-05-01 10:01:00 INFO Connection established
+2024-05-01 10:02:00 WARN Disk space low on /dev/sda1
+2024-05-01 10:03:00 DEBUG Starting backup routine
+2024-05-01 10:04:00 ERROR User 'admin' failed login attempt
+2024-05-01 10:05:00 INFO File saved: /var/log/app.log
+2024-05-01 10:06:00 INFO Process completed successfully
+2024-05-01 10:07:00 WARN CPU temperature high
+2024-05-01 10:08:00 INFO File uploaded: report2024.csv
+2024-05-01 10:09:00 ERROR Disk read failure at sector 2048
+2024-05-01 10:10:00 DEBUG Cleanup script started
