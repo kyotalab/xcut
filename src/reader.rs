@@ -9,7 +9,12 @@ pub fn read_lines(args: Args, reader: Box<dyn BufRead>) -> Result<()> {
     let re_pos_regex = Regex::new(r#"col\((\d+)\)\s*=~\s*"(.+?)""#)?;
     let re_neg_regex = Regex::new(r#"col\((\d+)\)\s*!~\s*"(.+?)""#)?;
 
-    for line in reader.lines() {
+    let mut lines = reader.lines();
+    if args.no_header.unwrap_or(false) {
+        lines.next();
+    }
+
+    for line in lines {
         let line = line?;
         let fields: Vec<&str> = match (&args.delim, &args.max_split) {
             (Some(delim), Some(n)) => line.splitn(*n, delim).collect(),

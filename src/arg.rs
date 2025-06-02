@@ -22,4 +22,6 @@ pub struct Args {
     pub out_delim: Option<String>,
     #[arg(long = "output")]
     pub output: Option<PathBuf>,
+    #[arg(long = "no-header", action = clap::ArgAction::SetTrue)]
+    pub no_header: Option<bool>,
 }
