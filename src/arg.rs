@@ -12,8 +12,6 @@ pub struct Args {
     // pub print: Option<String>,
     #[arg(short = 'c', long = "cols", value_delimiter = ',')]
     pub cols: Option<Vec<usize>>,
-    // 以下オプションは後で定義する
-    // --delim, --no-header, --output, --limit, etc
     #[arg(short = 'd', long = "delim")]
     pub delim: Option<String>,
     #[arg(short = 'm', long = "max-split")]

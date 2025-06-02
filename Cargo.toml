@@ -8,3 +8,7 @@ anyhow = "1.0.98"
 clap = { version = "4.5.39", features = ["derive"] }
 evalexpr = "12.0.2"
 regex = "1.11.1"
+
+[dev-dependencies]
+assert_cmd = "2"
+predicates = "3"
