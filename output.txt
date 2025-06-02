@@ -1,4 +1,0 @@
-2024-05-01 10:01:00 INFO Connection established
-2024-05-01 10:05:00 INFO File saved: /var/log/app.log
-2024-05-01 10:06:00 INFO Process completed successfully
-2024-05-01 10:08:00 INFO File uploaded: report2024.csv

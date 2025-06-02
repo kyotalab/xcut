@@ -1,6 +1,0 @@
-timestamp,level,message
-2024-06-01T12:00:00Z,INFO,System started
-2024-06-01T12:01:00Z,WARN,High memory usage
-2024-06-01T12:02:00Z,INFO,Service initialized
-2024-06-01T12:03:00Z,ERROR,Connection failed
-2024-06-01T12:04:00Z,INFO,Shutdown complete
