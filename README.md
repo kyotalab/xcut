@@ -107,6 +107,24 @@ PowerShell has issues interpreting `!~`, quotes, and parentheses.
 For best results on Windows:
 
 - Use **cmd.exe** or **Git Bash**
+
+---
+
+## Running Tests
+
+To run integration tests, make sure the binary is built first:
+
+```bash
+cargo build
+cargo test
+```
+
+The tests expect `target/debug/xcut` to be available. If you want to run tests directly without building separately, simply use:
+
+```bash
+cargo test
+```
+
 ---
 
 
