@@ -24,4 +24,8 @@ pub struct Args {
     pub output: Option<PathBuf>,
     #[arg(long = "no-header", action = clap::ArgAction::SetTrue)]
     pub no_header: Option<bool>,
+    #[arg(long = "head")]
+    pub head: Option<usize>,
+    #[arg(long = "tail")]
+    pub tail: Option<usize>,
 }

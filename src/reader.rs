@@ -1,5 +1,6 @@
 use anyhow::Result;
 use regex::Regex;
+use std::collections::VecDeque;
 use std::io::{BufRead, Write};
 
 use crate::Args;
@@ -14,8 +15,27 @@ pub fn read_lines(args: Args, reader: Box<dyn BufRead>) -> Result<()> {
         lines.next();
     }
 
-    for line in lines {
-        let line = line?;
+    let actual_lines: Vec<String> = if let Some(tail_count) = args.tail {
+        let mut buffer = VecDeque::with_capacity(tail_count);
+        for line in lines {
+            let line = line?;
+            if buffer.len() == tail_count {
+                buffer.pop_front();
+            }
+            buffer.push_back(line);
+        }
+        buffer.into_iter().collect()
+    } else {
+        lines.collect::<Result<_, _>>()? // Result<Vec<String>>
+    };
+
+    for (i, line) in actual_lines.into_iter().enumerate() {
+        if let Some(head_count) = args.head {
+            if i >= head_count {
+                break;
+            }
+        }
+
         let fields: Vec<&str> = match (&args.delim, &args.max_split) {
             (Some(delim), Some(n)) => line.splitn(*n, delim).collect(),
             (Some(delim), None) => line.split(delim).collect(),
