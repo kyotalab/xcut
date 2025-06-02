@@ -36,7 +36,7 @@ pub fn read_lines(args: Args, reader: Box<dyn BufRead>) -> Result<()> {
         let out_delim = args.out_delim.as_deref().unwrap_or(" ");
         if let Some(ref vec) = args.cols {
             let extracted_line = extract_columns(&fields, vec);
-            println!("{}", extracted_line.join(out_delim));
+            println!("{}", extracted_line?.join(out_delim));
         } else {
             println!("{}", fields.join(out_delim));
         }
