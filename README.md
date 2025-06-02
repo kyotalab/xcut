@@ -1,18 +1,19 @@
 # xcut – A Flexible Field Extractor and Filter Tool for the Command Line
 
-`xcut` is a fast and flexible CLI tool for extracting and filtering fields from structured text, inspired by `cut`, `awk`, and `jq`.
+**xcut** is an extended version of the Unix `cut` command, with support for filtering, column extraction, and flexible delimiters.
 It is written in Rust and supports cross-platform usage (Linux, macOS, Windows via CMD or Git Bash).
 
 ---
 
 ## Features
 
-- Extract specific fields (columns) by index
-- Flexible delimiter control (e.g., space, comma, tab)
-- Field filtering with boolean expressions or regex
-- Regex *and* logical expressions: `col(2) == "INFO" && col(4) =~ "CPU"`
-- Configurable output delimiter
-- Works with stdin and files
+- Column selection (`--cols`)
+- Flexible field delimiter (`--delim`, `--max-split`)
+- Field filtering with boolean logic and regex (`--filter`)
+- Output customization (`--out-delim`, `--output`)
+- CSV-style header skipping (`--no-header`)
+- Head/tail output restriction (`--head`, `--tail`)
+- Accepts stdin when no input file is specified
 
 ---
 
@@ -24,14 +25,46 @@ xcut [OPTIONS]
 
 ### Basic Options
 
-| Option           | Description                                                                 |
-|------------------|-----------------------------------------------------------------------------|
-| `--input <FILE>` | Input file path. If omitted, reads from stdin                               |
-| `--cols <N,..>`  | Comma-separated list of 1-based field indices to output                     |
-| `--delim <STR>`  | Input delimiter (default: whitespace)                                       |
-| `--max-split N`  | Maximum number of fields to split per line (e.g., split into at most N)     |
-| `--filter <EXPR>`| Filter expression (supports regex, boolean logic, `col(N)` substitution)    |
-| `--out-delim <S>`| Output delimiter when printing selected columns (default: space)            |
+- `-i`, `--input <INPUT>`
+  Path to the input file. Reads from stdin if not specified
+
+- `-f`, `--filter <FILTER>`
+  Filter expression to match lines. Supports regex and boolean logic.
+  Examples:
+  - `col(3) == "INFO"`
+  - `col(4) =~ "^CPU"`
+  - `col(3) !~ "DEBUG" && col(4) =~ "error"`
+
+- `-c`, `--cols <COLS>`
+  List of column numbers to output (1-based index).
+  Example: `--cols 1,3`
+
+- `--delim <DELIM>`
+  Delimiter used to split each line into columns. Default is whitespace
+
+- `--max-split <N>`
+  Maximum number of splits to perform when using `--delim`. Useful to preserve trailing content in the last field
+
+- `--out-delim <OUT_DELIM>`
+  Delimiter used to join output fields. Default is a space
+
+- `-o`, `--output <OUTPUT>`
+  Path to output file. Appends to the file if it exists. Defaults to stdout
+
+- `--no-header`
+  Skip the first line (e.g. header in CSV files)
+
+- `--head <HEAD>`
+  Output only the first N lines (like `head`)
+
+- `--tail <TAIL>`
+  Output only the last N lines (like `tail`)
+
+- `-h`, `--help`
+  Print help (see a summary with `-h`)
+
+- `-V`, `--version`
+  Print version
 
 ---
 
@@ -53,17 +86,17 @@ You can filter lines using column values. Examples:
 ## Examples
 
 ```bash
-# Extract column 3 and 4 from lines where column 2 is INFO
-xcut --input sample_logs.txt --cols 3,4 --filter 'col(2) == "INFO"'
+## Extract columns 2 and 4 with space as delimiter, max 4 splits
+xcut --input sample_logs.txt --cols 2,4 --delim ' ' --max-split 4
 
-# Match lines where column 4 ends with CPU
-xcut --cols 3,4 --delim ' ' --max-split 4 --filter 'col(4) =~ ".*CPU"'
+# Filter lines where column 3 matches regex and output to a file
+xcut --input sample_logs.txt --filter 'col(3) =~ "ERROR"' --output errors.txt
 
-# Exclude rows where column 2 is WARN
-xcut --cols 2,3 --filter 'col(2) !~ "WARN"'
+# Only take the first 10 lines, skip the header
+xcut --input data.csv --no-header --head 10 --cols 1,2,3 --delim ','
 
-# Output selected fields with comma delimiter
-xcut --cols 2,3 --out-delim ','
+# Use regex negation
+xcut --input logs.txt --filter 'col(3) !~ "DEBUG"'
 ```
 
 ---
@@ -76,10 +109,4 @@ For best results on Windows:
 - Use **cmd.exe** or **Git Bash**
 ---
 
-## Planned Features
 
-- [ ] Support for field range: `--cols 1-3,5`
-- [ ] TSV, CSV, JSON format modes
-- [ ] `--header` to skip or include headers
-- [ ] External filter script via `--filter-file`
-- [ ] Installable man page via `clap_mangen`
