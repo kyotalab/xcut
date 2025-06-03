@@ -2,6 +2,14 @@
 name = "xcut"
 version = "0.1.0"
 edition = "2024"
+authors = ["Kyota <jagbvg.eptpeox@gmail.com>"]
+license = "MIT"
+description = "An extended cut command with regex filtering and formatting"
+readme = "README.md"
+homepage = "https://github.com/kyotalab/xcut"
+repository = "https://github.com/kyotalab/xcut"
+keywords = ["cut", "cli", "filter", "regex"]
+categories = ["command-line-utilities"]
 
 [dependencies]
 anyhow = "1.0.98"
